@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Saker Energy - 离线演示模式</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0f; color:#e0e0e0; font-family:system-ui,sans-serif; padding:20px; }
+  .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  .header h1 { color:#22d3ee; font-size:24px; }
+  .badge { background:#f59e0b; color:#000; padding:4px 12px; border-radius:4px; font-size:12px; font-weight:bold; }
+  .grid { display:grid; grid-template-columns:2fr 1fr; gap:16px; }
+  .panel { background:#111827; border:1px solid #1f2937; border-radius:8px; padding:16px; }
+  .panel h2 { color:#22d3ee; font-size:16px; margin-bottom:12px; }
+  .device-row { display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #1f2937; font-family:monospace; font-size:13px; }
+  .device-row.alarm { background:#7f1d1d; }
+  .status-ok { color:#22c55e; }
+  .status-warn { color:#f59e0b; }
+  .status-crit { color:#ef4444; }
+  .controls { margin:16px 0; display:flex; gap:12px; align-items:center; }
+  button { background:#0891b2; color:#fff; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-size:14px; }
+  button:hover { background:#067a99; }
+  .timeline { height:8px; background:#1f2937; border-radius:4px; flex:1; }
+  .timeline-fill { height:100%; background:#22d3ee; border-radius:4px; width:0%; transition:width 0.3s; }
+  .alarm-item { background:#7f1d1d50; border-left:3px solid #ef4444; padding:8px; margin:4px 0; font-size:13px; }
+  .event-card { background:#1e3a5f; border:1px solid #3b82f6; border-radius:6px; padding:12px; margin:8px 0; }
+  .hypo { background:#1a2e1a; border-left:3px solid #22c55e; padding:8px; margin:4px 0; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Saker Energy 充储一体场站 · 离线演示</h1>
+  <span class="badge">离线模式</span>
+</div>
+
+<div class="controls">
+  <button onclick="playDemo()">▶ 开始故障演示</button>
+  <div class="timeline"><div class="timeline-fill" id="timeline"></div></div>
+  <span id="timeLabel">00:00</span>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>实时设备状态</h2>
+    <div id="devices"></div>
+  </div>
+  <div class="panel">
+    <h2>告警流</h2>
+    <div id="alarms"><div style="color:#666;font-size:13px;">等待演示...</div></div>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:16px;">
+  <h2>诊断事件</h2>
+  <div id="events"><div style="color:#666;font-size:13px;">故障注入后自动产生诊断结果</div></div>
+</div>
+
+<script>
+const devices = [
+  {id:"CP-01", type:"充电桩", temp:45, power:60, status:"ok"},
+  {id:"CP-02", type:"充电桩", temp:48, power:55, status:"ok"},
+  {id:"CP-03", type:"充电桩", temp:44, power:62, status:"ok"},
+  {id:"CP-04", type:"充电桩", temp:46, power:58, status:"ok"},
+  {id:"CP-05", type:"充电桩", temp:47, power:61, status:"ok"},
+  {id:"CP-06", type:"充电桩", temp:45, power:59, status:"ok"},
+  {id:"CP-07", type:"充电桩", temp:46, power:60, status:"ok"},
+  {id:"CP-08", type:"充电桩", temp:44, power:63, status:"ok"},
+  {id:"CP-09", type:"充电桩", temp:45, power:60, status:"ok"},
+  {id:"CP-10", type:"充电桩", temp:46, power:58, status:"ok"},
+  {id:"CP-11", type:"充电桩", temp:47, power:59, status:"ok"},
+  {id:"CP-12", type:"充电桩", temp:45, power:61, status:"ok"},
+  {id:"BESS-01", type:"储能柜", temp:25, power:0, status:"ok"},
+  {id:"PCS-01", type:"PCS", temp:35, power:50, status:"ok"},
+  {id:"METER-01", type:"电表", temp:0, power:600, status:"ok"},
+];
+
+function renderDevices() {
+  document.getElementById("devices").innerHTML = devices.map(d => `
+    <div class="device-row ${d.status==='crit'?'alarm':''}">
+      <span>${d.id}</span>
+      <span>${d.type}</span>
+      <span>温度: <span class="status-${d.status}">${d.temp}°C</span></span>
+      <span>功率: ${d.power}kW</span>
+    </div>
+  `).join("");
+}
+renderDevices();
+
+let demoStep = 0;
+let timer = null;
+
+function playDemo() {
+  clearInterval(timer);
+  demoStep = 0;
+  document.getElementById("alarms").innerHTML = "";
+  document.getElementById("events").innerHTML = "";
+
+  timer = setInterval(() => {
+    demoStep++;
+    document.getElementById("timeline").style.width = Math.min(demoStep*5, 100) + "%";
+    document.getElementById("timeLabel").textContent = "00:" + String(demoStep*2).padStart(2,"0");
+
+    // Step 3: inject fault on CP-07
+    if (demoStep === 3) {
+      const cp7 = devices.find(d=>d.id==="CP-07");
+      cp7.temp = 72; cp7.status = "crit";
+      addAlarm("CP-07", "MODULE_OVERTEMP", "模块温度72°C超过阈值70°C");
+      renderDevices();
+    }
+    // Step 5: fan slow
+    if (demoStep === 5) {
+      addAlarm("CP-07", "FAN_SLOW", "风扇转速降至800rpm，低于正常2200rpm");
+    }
+    // Step 7: event created
+    if (demoStep === 7) {
+      addEvent("charger_thermal_anomaly", "CP-07", [
+        {cause:"散热链路故障（风扇或风道）", support:"模块温度持续升高，同时风扇转速下降", check:"检查风扇供电、转速反馈、风道堵塞"},
+        {cause:"充电模块过负载", support:"高功率工况下温度上升", check:"核对功率曲线与模块散热额定值"},
+        {cause:"温度传感器偏差", support:"单点温度异常可能是测量问题", check:"用校准测温仪复核模块温度"},
+      ]);
+    }
+    // Step 10: Safety gate demo
+    if (demoStep === 10) {
+      addAlarm("SYSTEM", "SAFETY_GATE", "已拦截'停机'控制指令 - Safety Gate触发");
+    }
+
+    if (demoStep >= 20) clearInterval(timer);
+  }, 800);
+}
+
+function addAlarm(dev, code, msg) {
+  const div = document.createElement("div");
+  div.className = "alarm-item";
+  div.innerHTML = `<b>${dev}</b> [${code}]<br>${msg}`;
+  document.getElementById("alarms").prepend(div);
+}
+
+function addEvent(type, dev, hyps) {
+  const div = document.createElement("div");
+  div.className = "event-card";
+  div.innerHTML = `<b>事件: ${type}</b> (${dev})<br><br>` +
+    hyps.map((h,i) => `
+      <div class="hypo">
+        <b>候选${i+1}: ${h.cause}</b><br>
+        支持: ${h.support}<br>
+        下一步: ${h.check}
+      </div>
+    `).join("");
+  document.getElementById("events").appendChild(div);
+}
+</script>
+</body>
+</html>

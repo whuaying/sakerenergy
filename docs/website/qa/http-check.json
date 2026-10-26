@@ -1,0 +1,78 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "bytes": 17357,
+    "url": "https://saker-energy.onrender.com/"
+  },
+  {
+    "path": "/platform.html",
+    "status": 200,
+    "bytes": 10940,
+    "url": "https://saker-energy.onrender.com/platform.html"
+  },
+  {
+    "path": "/solutions.html",
+    "status": 200,
+    "bytes": 10693,
+    "url": "https://saker-energy.onrender.com/solutions.html"
+  },
+  {
+    "path": "/technology.html",
+    "status": 200,
+    "bytes": 10143,
+    "url": "https://saker-energy.onrender.com/technology.html"
+  },
+  {
+    "path": "/experience.html",
+    "status": 200,
+    "bytes": 11335,
+    "url": "https://saker-energy.onrender.com/experience.html"
+  },
+  {
+    "path": "/contact.html",
+    "status": 200,
+    "bytes": 11704,
+    "url": "https://saker-energy.onrender.com/contact.html"
+  },
+  {
+    "path": "/privacy.html",
+    "status": 200,
+    "bytes": 6987,
+    "url": "https://saker-energy.onrender.com/privacy.html"
+  },
+  {
+    "path": "/404.html",
+    "status": 200,
+    "bytes": 4438,
+    "url": "https://saker-energy.onrender.com/404.html"
+  },
+  {
+    "path": "/does-not-exist",
+    "status": 404,
+    "custom404": true
+  },
+  {
+    "path": "/version.json",
+    "status": 200,
+    "bytes": 107,
+    "url": "https://saker-energy.onrender.com/version.json",
+    "version": {
+      "version": "1.0.0",
+      "commit": "250ebf17d9f3d0490bfcabca9b66d28e2cb3f1ec",
+      "build": "2026-10-21T09:20:59.510Z"
+    }
+  },
+  {
+    "path": "/robots.txt",
+    "status": 200,
+    "bytes": 78,
+    "url": "https://saker-energy.onrender.com/robots.txt"
+  },
+  {
+    "path": "/sitemap.xml",
+    "status": 200,
+    "bytes": 582,
+    "url": "https://saker-energy.onrender.com/sitemap.xml"
+  }
+]

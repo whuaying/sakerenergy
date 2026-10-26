@@ -1,0 +1,18 @@
+# Reproducible configuration for the Saker Energy marketing website.
+# The initial service is created through Render MCP with these same settings.
+services:
+  - type: web
+    runtime: static
+    name: saker-energy
+    repo: https://github.com/saker-ai/saker-energy
+    branch: main
+    autoDeployTrigger: commit
+    buildCommand: npm run check && npm test
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+      - key: SITE_URL
+        value: https://saker-energy.onrender.com

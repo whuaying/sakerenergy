@@ -1,0 +1,13 @@
+fault_id,domain,scenario,expected_hypothesis,human_check
+F01,charger,module_over_temperature,cooling_issue,true
+F02,charger,fan_feedback_failure,fan_or_sensor_issue,true
+F03,charger,unexpected_charge_abort,handshake_or_power_issue,true
+F04,charger,communication_offline,gateway_or_network_issue,true
+F05,charger,connector_over_temperature,connector_thermal_issue,true
+F06,charger,unexpected_power_derating,thermal_or_grid_or_policy,true
+F07,bess,cell_temperature_spread,cooling_cell_or_sensor_issue,true
+F08,bess,cell_voltage_spread,imbalance_or_sensor_issue,true
+F09,bess,bms_sampling_anomaly,bms_measurement_issue,true
+F10,bess,pcs_alarm,pcs_or_grid_issue,true
+F11,site,shared_voltage_disturbance,upstream_supply_issue,true
+F12,site,sensor_data_corruption,telemetry_quality_issue,true

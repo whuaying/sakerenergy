@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saker Energy - 场站智能运维大屏</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0e1a; color:#e0e6f0; font-family:'Segoe UI',system-ui,sans-serif; overflow:hidden; }
+.header { background:linear-gradient(90deg,#1a2332,#0d1520); padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #2a3a5a; }
+.header h1 { font-size:20px; color:#4fc3f7; letter-spacing:2px; }
+.header .status { font-size:13px; color:#8bc34a; }
+.grid { display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:auto 1fr 1fr; gap:12px; padding:12px; height:calc(100vh - 56px); }
+.panel { background:#111a2e; border:1px solid #1e2d4a; border-radius:6px; padding:14px; overflow:auto; }
+.panel h2 { font-size:14px; color:#4fc3f7; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid #1e2d4a; }
+.station-map { grid-column:1/3; grid-row:1/2; display:flex; align-items:center; justify-content:space-around; }
+.charger { width:60px; height:80px; background:#1a2d4a; border:1px solid #2a4a7a; border-radius:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; position:relative; }
+.charger.alarm { border-color:#ff5252; box-shadow:0 0 12px rgba(255,82,82,.4); }
+.charger .temp { color:#4fc3f7; font-weight:bold; }
+.charger .rpm { color:#8bc34a; font-size:9px; }
+.bess { width:80px; height:100px; background:#1a2d4a; border:1px solid #2a4a7a; border-radius:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; }
+.bess.alarm { border-color:#ff5252; box-shadow:0 0 12px rgba(255,82,82,.4); }
+.meter { width:60px; height:60px; background:#1a3a2a; border:1px solid #2a7a4a; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; }
+.alarm-list { grid-column:3/4; grid-row:1/3; }
+.alarm-item { padding:8px; margin-bottom:6px; background:#162038; border-left:3px solid #ff5252; border-radius:3px; font-size:12px; }
+.alarm-item.warning { border-left-color:#ffb74d; }
+.alarm-item.info { border-left-color:#4fc3f7; }
+.alarm-item .code { color:#ff8a80; font-weight:bold; }
+.alarm-item.warning .code { color:#ffcc80; }
+.telemetry { grid-column:1/2; grid-row:2/4; }
+.telemetry table { width:100%; font-size:11px; border-collapse:collapse; }
+.telemetry th, .telemetry td { padding:4px 6px; text-align:left; border-bottom:1px solid #1a2540; }
+.telemetry th { color:#5c6b8a; }
+.events-panel { grid-column:2/3; grid-row:2/3; }
+.event-item { padding:8px; margin-bottom:6px; background:#162038; border-radius:3px; font-size:12px; }
+.event-item .type { color:#ce93d8; font-weight:bold; }
+.wo-panel { grid-column:2/3; grid-row:3/4; }
+.wo-item { padding:6px; margin-bottom:4px; background:#162038; border-radius:3px; font-size:11px; display:flex; justify-content:space-between; }
+.wo-status { padding:2px 8px; border-radius:10px; font-size:10px; }
+.wo-status.NEW { background:#2a3a5a; color:#8bc3f7; }
+.wo-status.TRIAGED { background:#2a4a3a; color:#8bc34a; }
+.wo-status.INVESTIGATING { background:#4a3a2a; color:#ffb74d; }
+.wo-status.RESOLVED { background:#1a3a2a; color:#66bb6a; }
+.metrics { display:flex; gap:16px; margin-bottom:10px; }
+.metric { text-align:center; }
+.metric .val { font-size:22px; font-weight:bold; color:#4fc3f7; }
+.metric .label { font-size:11px; color:#5c6b8a; }
+button { background:#1e3a5a; color:#4fc3f7; border:1px solid #2a5a8a; padding:4px 12px; border-radius:3px; cursor:pointer; font-size:12px; }
+button:hover { background:#2a4a6a; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>SAKER ENERGY · 充储场站智能运维</h1>
+  <div class="status" id="connStatus">● 连接中...</div>
+</div>
+<div class="grid">
+  <div class="panel station-map">
+    <div class="metrics">
+      <div class="metric"><div class="val" id="mVoltage">--</div><div class="label">母线电压(V)</div></div>
+      <div class="metric"><div class="val" id="mPower">--</div><div class="label">总功率(kW)</div></div>
+      <div class="metric"><div class="val" id="mSOC">--</div><div class="label">储能SOC(%)</div></div>
+    </div>
+    <div id="chargers"></div>
+    <div class="bess" id="bess">BESS-01<div style="font-size:10px;color:#8bc34a" id="bessSpread">温差--</div></div>
+    <div class="meter" id="meter">GRID</div>
+  </div>
+
+  <div class="panel alarm-list">
+    <h2>实时告警</h2>
+    <div id="alarms"></div>
+  </div>
+
+  <div class="panel telemetry">
+    <h2>设备遥测</h2>
+    <table>
+      <thead><tr><th>设备</th><th>测点</th><th>值</th><th>时间</th></tr></thead>
+      <tbody id="telemetryBody"></tbody>
+    </table>
+  </div>
+
+  <div class="panel events-panel">
+    <h2>关联事件</h2>
+    <div id="events"></div>
+  </div>
+
+  <div class="panel wo-panel">
+    <h2>工单</h2>
+    <div id="workorders"></div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080/api';
+
+function refresh() {
+  // Telemetry
+  fetch(`${API}/telemetry/latest`).then(r=>r.json()).then(data=>{
+    const body = document.getElementById('telemetryBody');
+    body.innerHTML = data.slice(0,30).map(t=>`<tr><td>${t.device_id}</td><td>${t.point}</td><td>${t.value.toFixed(1)} ${t.unit}</td><td>${new Date(t.time).toLocaleTimeString()}</td></tr>`).join('');
+    // Update station map
+    const m = {};
+    data.forEach(t=>{ m[`${t.device_id}_${t.point}`] = t.value; });
+    if (m['METER-01_bus_voltage']) document.getElementById('mVoltage').textContent = m['METER-01_bus_voltage'].toFixed(0);
+    if (m['METER-01_total_power']) document.getElementById('mPower').textContent = m['METER-01_total_power'].toFixed(0);
+    if (m['BESS-01_soc']) document.getElementById('mSOC').textContent = m['BESS-01_soc'].toFixed(0);
+    if (m['BESS-01_temp_spread']) document.getElementById('bessSpread').textContent = '温差'+m['BESS-01_temp_spread'].toFixed(1)+'°C';
+    // Charger tiles
+    const ch = document.getElementById('chargers');
+    ch.innerHTML = '';
+    for(let i=1;i<=12;i++){
+      const id = 'CP-'+String(i).padStart(2,'0');
+      const temp = m[`${id}_module_temp`];
+      const rpm = m[`${id}_fan_rpm`];
+      const alarm = temp && temp > 70 ? 'alarm' : '';
+      ch.innerHTML += `<div class="charger ${alarm}">${id}<div class="temp">${temp?temp.toFixed(0)+'°C':'--'}</div><div class="rpm">${rpm?rpm.toFixed(0)+'rpm':'--'}</div></div>`;
+    }
+    document.getElementById('connStatus').textContent = '● 已连接';
+  }).catch(e=>{ document.getElementById('connStatus').textContent = '● 断开'; });
+
+  // Alarms
+  fetch(`${API}/alarms`).then(r=>r.json()).then(data=>{
+    document.getElementById('alarms').innerHTML = data.slice(0,20).map(a=>
+      `<div class="alarm-item ${a.severity===1?'info':a.severity===2?'warning':''}"><div class="code">${a.alarm_code}</div><div>${a.device_id} · ${a.message}</div><div style="color:#5c6b8a;font-size:10px">${new Date(a.observed_at).toLocaleTimeString()}</div></div>`
+    ).join('');
+  });
+
+  // Events
+  fetch(`${API}/events`).then(r=>r.json()).then(data=>{
+    document.getElementById('events').innerHTML = data.slice(0,10).map(e=>
+      `<div class="event-item"><div class="type">#${e.event_id} ${e.event_type}</div><div style="color:#8aa">${e.affected_devices.join(', ')}</div><div style="color:#5c6b8a;font-size:10px">${new Date(e.first_seen).toLocaleString()} · ${e.status}</div></div>`
+    ).join('');
+  });
+
+  // Work orders
+  fetch(`${API}/workorders`).then(r=>r.json()).then(data=>{
+    document.getElementById('workorders').innerHTML = data.slice(0,10).map(w=>
+      `<div class="wo-item"><span>#${w.wo_id} 事件#${w.event_id}</span><span class="wo-status ${w.status}">${w.status}</span></div>`
+    ).join('');
+  });
+}
+
+refresh();
+setInterval(refresh, 3000);
+</script>
+</body>
+</html>
