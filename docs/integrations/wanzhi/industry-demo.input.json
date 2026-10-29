@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "event_id": "industry-demo-ess-001",
+  "input_revision": 1,
+  "round_id": "industry-round-001",
+  "trace_id": "industry-trace-001",
+  "data_origin": "INDUSTRY_DEMO_FIXTURE",
+  "description": "充储场站BUS-B下PCS-01与CP-05充电功率同期下降，原因待核验。参数参照典型充储场站拓扑构造（10kV进线→0.4kV母线BUS-B→500kW/1000kWh储能柜、500kW PCS、120kW充电桩），演示数据，不来自真实场站遥测。",
+  "window": {
+    "from": "2026-10-21T07:00:00Z",
+    "to": "2026-10-21T07:01:00Z"
+  },
+  "evidence": [
+    {
+      "evidence_id": "E01",
+      "device_id": "CP-05",
+      "device_name": "120kW双枪充电桩",
+      "point": "power_kw",
+      "unit": "kW",
+      "samples": [
+        {"time": "2026-10-21T07:00:00Z", "value": 96},
+        {"time": "2026-10-21T07:01:00Z", "value": 60}
+      ],
+      "quality": "good",
+      "source": "industry_demo_fixture_v1"
+    },
+    {
+      "evidence_id": "E02",
+      "device_id": "PCS-01",
+      "device_name": "500kW储能变流器",
+      "point": "power_kw",
+      "unit": "kW",
+      "samples": [
+        {"time": "2026-10-21T07:00:00Z", "value": 180},
+        {"time": "2026-10-21T07:01:00Z", "value": 110}
+      ],
+      "sign_convention": "positive=charging_from_bus; values_do_not_form_a_power_balance",
+      "quality": "good",
+      "source": "industry_demo_fixture_v1"
+    },
+    {
+      "evidence_id": "E03",
+      "device_ids": ["CP-05", "PCS-01", "ESS-01"],
+      "kind": "topology",
+      "fact": "CP-05、PCS-01与ESS-01同属0.4kV母线BUS-B；上游为10kV进线经变压器降压。尚未提供母线电压与调度/峰谷策略记录。",
+      "quality": "good",
+      "source": "industry_demo_fixture_v1"
+    }
+  ],
+  "missing_information": [
+    "BUS-B上游母线电压窗口（METER-01，额定380V，运行范围±7%）",
+    "调度限功率或峰谷策略记录（下发时间、目标值、适用范围）",
+    "CP-05与PCS-01设备独立时间戳核对结果"
+  ],
+  "available_queries": [
+    {
+      "query_id": "Q01",
+      "kind": "telemetry_window",
+      "description": "读取当前事件固定时间窗的METER-01母线电压（额定380V）；缺失时返回missing，不补造读数。",
+      "cost_units": 1
+    }
+  ],
+  "query_budget_remaining": 3
+}

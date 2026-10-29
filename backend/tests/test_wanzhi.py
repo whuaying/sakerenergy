@@ -289,8 +289,13 @@ class CheckpointTests(unittest.TestCase):
 
     def test_non_synthetic_probe_rejected_before_network(self):
         package = fixture('evidence-package.example.json'); package['data_origin'] = 'REAL'
-        with self.assertRaisesRegex(ContractError, 'SYNTHETIC'):
+        with self.assertRaisesRegex(ContractError, 'FIXTURE_ORIGIN_ONLY'):
             wanzhi.run_live(package, self.settings)
+
+    def test_industry_demo_origin_is_permitted(self):
+        package = fixture('industry-demo.input.json')
+        validate_package(package)
+        self.assertEqual(package['data_origin'], 'INDUSTRY_DEMO_FIXTURE')
 
     def test_read_only_reconciliation_can_use_verified_completion_contract(self):
         package = fixture('evidence-package.example.json')
@@ -346,6 +351,54 @@ class CredentialEntryTests(unittest.TestCase):
                 self.assertEqual(registration_settings(path).template_id, 'fixture-agent')
                 with self.assertRaises(ConfigError):
                     load_settings(path)
+
+
+class FollowupTests(unittest.TestCase):
+    def setUp(self):
+        self.package = fixture('evidence-package.example.json')
+        self.parent_decision = {
+            'schema_version': '1.0',
+            'event_id': self.package['event_id'],
+            'input_revision': self.package['input_revision'],
+            'round_id': self.package['round_id'],
+            'data_origin': self.package['data_origin'],
+            'status': 'NEEDS_EVIDENCE',
+            'abstain': True,
+            'summary': '需要补齐一项只读证据以区分候选。',
+            'hypotheses': [],
+            'requested_evidence': [{'query_id': 'Q01', 'reason': '读取母线电压以区分候选。'}],
+            'human_checks': [],
+        }
+
+    def test_followup_package_builds_from_validated_parent(self):
+        package2 = wanzhi.build_followup_package(self.package, self.parent_decision)
+        validate_package(package2)
+        self.assertEqual(package2['input_revision'], 2)
+        self.assertNotEqual(package2['round_id'], self.package['round_id'])
+        self.assertEqual(package2['data_origin'], self.package['data_origin'])
+        self.assertEqual(len(package2['evidence']), len(self.package['evidence']) + 1)
+        extra = package2['evidence'][-1]
+        self.assertEqual(extra['evidence_id'], 'E04')
+        self.assertIn('simulation', extra['source'])
+        self.assertEqual(extra['quality'], 'good')
+        self.assertEqual(package2['query_budget_remaining'], self.package['query_budget_remaining'] - 1)
+        self.assertFalse(any('母线电压' in item or 'METER-01' in item
+                             for item in package2['missing_information']))
+
+    def test_followup_requires_requested_evidence(self):
+        decision = deepcopy(self.parent_decision)
+        decision['requested_evidence'] = []
+        with self.assertRaisesRegex(ContractError, 'FOLLOWUP_REQUIRES_REQUESTED_EVIDENCE'):
+            wanzhi.build_followup_package(self.package, decision)
+
+    def test_local_read_only_query_rejects_unknown_id(self):
+        with self.assertRaisesRegex(ContractError, 'QUERY_NOT_ALLOWED'):
+            wanzhi.local_read_only_query('execute_sql', {'from': '2026-10-28T10:00:00Z', 'to': '2026-10-28T10:01:00Z'})
+
+    def test_followup_requires_validated_parent_record(self):
+        record = {'run_id': str(uuid.uuid4()), 'state': 'RESULT_NOT_VALIDATED', 'session_id': None}
+        with self.assertRaisesRegex(ConfigError, 'FOLLOWUP_REQUIRES_VALIDATED_PARENT'):
+            wanzhi.run_followup(record, Settings('fixture', 'agent'))
 
 
 if __name__ == '__main__':

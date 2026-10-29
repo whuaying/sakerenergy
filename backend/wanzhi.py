@@ -106,9 +106,9 @@ def retrieve(record, client, settings):
 
 def run_live(package, settings, client=None, run_id=None):
     validate_package(package)
-    # The first integration gate permits only the explicitly hand-authored synthetic fixture.
-    if package['data_origin'] != 'SYNTHETIC_DEVELOPMENT_FIXTURE':
-        raise ContractError('INITIAL_PROBE_ACCEPTS_SYNTHETIC_FIXTURE_ONLY')
+    # The integration gate permits only explicitly hand-authored fixture origins.
+    if package['data_origin'] not in ('SYNTHETIC_DEVELOPMENT_FIXTURE', 'INDUSTRY_DEMO_FIXTURE'):
+        raise ContractError('INITIAL_PROBE_ACCEPTS_FIXTURE_ORIGIN_ONLY')
     if not settings.api_key or not settings.template_id:
         raise ConfigError('CONFIGURE_KEY_AND_TEMPLATE_FIRST')
     record = create_record(package, run_id)
@@ -142,6 +142,126 @@ def run_live(package, settings, client=None, run_id=None):
     return record
 
 
+def local_read_only_query(query_id, window):
+    """SIMULATED read-only telemetry lookup; never claims real station data.
+
+    The follow-up gate executes only read-only queries against locally declared
+    fixtures and labels the result as simulation. It never fabricates live values.
+    """
+    if query_id != 'Q01':
+        raise ContractError('QUERY_NOT_ALLOWED')
+    return {
+        'query_id': 'Q01',
+        'kind': 'telemetry_window',
+        'result': 'ok',
+        'samples': [
+            {'time': window['from'], 'value': 396, 'unit': 'V'},
+            {'time': window['to'], 'value': 396, 'unit': 'V'},
+        ],
+        'quality': 'good',
+        'source': 'local_read_only_telemetry_simulation_v1',
+    }
+
+
+def _window_of(package):
+    window = package.get('window')
+    if isinstance(window, dict) and window.get('from') and window.get('to'):
+        return {'from': window['from'], 'to': window['to']}
+    times = []
+    for item in package.get('evidence', []):
+        for sample in item.get('samples', []):
+            if sample.get('time'):
+                times.append(sample['time'])
+    if times:
+        return {'from': min(times), 'to': max(times)}
+    raise ContractError('NO_EVIDENCE_TIME_WINDOW')
+
+
+def build_followup_package(parent_input, parent_decision):
+    """Second-round evidence package: parent evidence + read-only query results."""
+    if not isinstance(parent_decision, dict) or not isinstance(parent_decision.get('requested_evidence'), list):
+        raise ContractError('FOLLOWUP_REQUIRES_REQUESTED_EVIDENCE')
+    window = _window_of(parent_input)
+    evidence = [dict(item) for item in parent_input.get('evidence', [])]
+    existing = {item['evidence_id'] for item in evidence}
+    covered = []
+    serial = len(evidence) + 1
+    for request in parent_decision['requested_evidence']:
+        result = local_read_only_query(request['query_id'], window)
+        evidence_id = 'E%02d' % serial
+        while evidence_id in existing:
+            serial += 1
+            evidence_id = 'E%02d' % serial
+        existing.add(evidence_id)
+        evidence.append({
+            'evidence_id': evidence_id,
+            'device_ids': ['METER-01'],
+            'point': 'bus_voltage_v',
+            'unit': 'V',
+            'samples': result['samples'],
+            'quality': result['quality'],
+            'source': result['source'],
+            'provenance': 'read_only_query:' + request['query_id'],
+        })
+        covered.append(request['query_id'])
+        serial += 1
+    if not covered:
+        raise ContractError('FOLLOWUP_REQUIRES_REQUESTED_EVIDENCE')
+    missing = []
+    for item in parent_input.get('missing_information', []):
+        if any(k in item for k in ('METER-01', '母线电压')):
+            continue
+        missing.append(item)
+    cost = sum((q.get('cost_units') or 1) for q in parent_input.get('available_queries', [])
+               if q.get('query_id') in covered)
+    package = {
+        'schema_version': '1.0',
+        'event_id': parent_input['event_id'],
+        'input_revision': parent_input['input_revision'] + 1,
+        'round_id': 'round-' + str(uuid.uuid4()),
+        'trace_id': 'trace-' + str(uuid.uuid4()),
+        'data_origin': parent_input['data_origin'],
+        'description': (parent_input.get('description', '') +
+                        '（第2轮：补充只读遥测证据 ' + ','.join(covered) + '，结果为本地模拟值）'),
+        'window': window,
+        'evidence': evidence,
+        'missing_information': missing,
+        'available_queries': parent_input.get('available_queries', []),
+        'query_budget_remaining': max(0, parent_input['query_budget_remaining'] - cost),
+    }
+    return validate_package(package)
+
+
+def run_followup(parent_record, settings, client=None):
+    """Second round on the parent session: never creates a new conversation."""
+    if parent_record.get('state') != 'VALIDATED_ADVISORY':
+        raise ConfigError('FOLLOWUP_REQUIRES_VALIDATED_PARENT')
+    if not parent_record.get('session_id'):
+        raise ConfigError('NO_SESSION_ID_MANUAL_RECONCILIATION_REQUIRED_NO_RESEND')
+    package = build_followup_package(parent_record['input'], parent_record['decision'])
+    record = create_record(package)
+    record['followup_of'] = parent_record['run_id']
+    record['session_id'] = parent_record['session_id']
+    client = client or WanzhiClient(settings)
+    stage = 'SENDING'
+    try:
+        record['state'] = stage
+        save_record(record, settings.api_key)
+        receipt = client.send_message(record['session_id'], json.dumps(package, ensure_ascii=False))
+        record['receipt'] = asdict(receipt)
+        record['completion_confirmed'] = receipt.completion_confirmed
+        record['state'] = 'FETCHING_RESULT'
+        save_record(record, settings.api_key)
+        stage = 'FETCHING_RESULT'
+        retrieve(record, client, settings)
+    except (ProviderError, ContractError, OSError, ValueError) as exc:
+        record['state'] = 'RESULT_NOT_VALIDATED' if stage == 'FETCHING_RESULT' else 'FAILED'
+        record['error'] = exc.code if isinstance(exc, ProviderError) else (
+            str(exc) if isinstance(exc, ContractError) else 'LOCAL_IO_OR_NETWORK_ERROR')
+        save_record(record, settings.api_key)
+    return record
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description='Saker Energy Wanzhi local integration gate')
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -151,6 +271,7 @@ def main(argv=None):
     mode.add_argument('--validate', metavar='DECISION_JSON', help='offline schema and semantic validation')
     mode.add_argument('--run', action='store_true', help='one real synthetic conversation (may consume quota)')
     mode.add_argument('--resume', metavar='RUN_ID', help='GET-only reconciliation; never resend')
+    mode.add_argument('--followup', metavar='RUN_ID', help='second round on an existing session; simulated read-only telemetry then resend')
     parser.add_argument('--input', default=str(DOCS / 'evidence-package.example.json'))
     parser.add_argument('--run-id', help='optional UUID idempotency identifier for --run')
     args = parser.parse_args(argv)
@@ -193,6 +314,9 @@ def main(argv=None):
                 retrieve(record, client, settings)
             except (ContractError, ProviderError):
                 raise ConfigError('CURRENT_ROUND_NOT_CONFIRMED_NO_RESEND') from None
+        elif args.followup:
+            parent = read(run_path(args.followup))
+            record = run_followup(parent, settings, client)
         else:
             package = read(args.input)
             # Prevent accidentally reusing the published sample round ID across different live runs.
