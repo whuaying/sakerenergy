@@ -10,11 +10,12 @@ export const pages = [
   { file: 'solutions.html', id: 'solutions', title: '应用场景 · Saker Energy', description: '面向充电站、储能站和充储一体场站，以三类典型异常理解跨设备协同运维。' },
   { file: 'technology.html', id: 'technology', title: '技术与可靠性 · Saker Energy', description: '只读接入、可恢复任务、可追溯证据和人工决策。了解 Saker Energy 的技术架构与验证路径。' },
   { file: 'experience.html', id: 'experience', title: '探索数字场站 · Saker Energy', description: '在可旋转的三维仿真场站中，体验异常发现、证据关联、候选诊断、人工反馈和复测归档。' },
+  { file: 'evidence-demo.html', id: 'evidence-demo', title: '证据诊断演示 · Saker Energy', description: '回放万智平台专属员工「充储场站证据诊断助手」的真实 API 调用：证据不足不妄断、只读补证、转人工核验。' },
   { file: 'contact.html', id: 'contact', title: '规划场站试点 · Saker Energy', description: '明确站点、数据和试点目标，测算运营价值并生成一份可带走的试点需求清单。' },
   { file: 'privacy.html', id: 'privacy', title: '隐私与使用说明 · Saker Energy', description: '了解本网站的数据处理、仿真内容、下载文件以及产品阶段。' },
   { file: '404.html', id: '404', title: '页面未找到 · Saker Energy', description: '返回 Saker Energy，继续探索充储场站智能运维。' },
 ];
-const nav = [ ['platform.html', 'platform', '平台能力'], ['solutions.html', 'solutions', '应用场景'], ['technology.html', 'technology', '技术与可靠性'] ];
+const nav = [ ['platform.html', 'platform', '平台能力'], ['solutions.html', 'solutions', '应用场景'], ['technology.html', 'technology', '技术与可靠性'], ['evidence-demo.html', 'evidence-demo', '证据诊断演示'] ];
 
 export async function build() {
   const out = path.join(root, 'dist');

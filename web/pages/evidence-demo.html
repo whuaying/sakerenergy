@@ -1,0 +1,93 @@
+<!-- 万智 Agent 真实调用回放 · 演示页（2026 云桥杯参赛作品） -->
+<section class="page-hero demo-hero">
+  <div class="container">
+    <p class="eyebrow">2026 云桥杯 · 工业智能体应用赛</p>
+    <h1>证据诊断演示<br>万智 Agent 真实调用回放</h1>
+    <p class="page-intro">「Saker Energy 充储场站证据诊断助手」在万智平台发布（Agent ID d86bc562cb9b450b），本页回放 2026-10-29 对平台开放 API 的真实调用：证据不足不妄断、主动请求只读补证、无法定论转人工。</p>
+    <p class="inline-note">演示回放 · 事件与遥测为行业演示数据（INDUSTRY_DEMO_FIXTURE），非真实场站测量；decision 内容取自真实 API 调用记录（脱敏）。</p>
+  </div>
+</section>
+
+<section class="demo-stage container" id="demo">
+  <div class="platform-overview">
+    <div class="platform-overview-top">
+      <div>
+        <p class="eyebrow">事件 · EVENT</p>
+        <h3>BUS-B 功率同窗下降</h3>
+      </div>
+      <span class="tag">2026-10-21T07:00Z · 1 分钟窗口</span>
+    </div>
+    <div class="overview-metrics">
+      <div><small>PCS-01 充电功率</small><strong>180→110<span>kW</span></strong></div>
+      <div><small>CP-05 充电功率</small><strong>96→60<span>kW</span></strong></div>
+      <div><small>母线电压 METER-01</small><strong>—<span>缺失</span></strong></div>
+    </div>
+    <div class="device-table">
+      <div><span>设备</span><span>类型</span><span>额定</span></div>
+      <div><span>ESS-01 / PCS-01</span><span>储能柜 / 变流器</span><span>500 kW / 500 kW</span></div>
+      <div><span>CP-05</span><span>双枪充电桩</span><span>120 kW</span></div>
+      <div><span>METER-01</span><span>母线电压测点</span><span>380 V ±7%</span></div>
+    </div>
+    <div class="window-bottom">拓扑：10kV 进线 → 变压器 → 0.4kV 母线 BUS-B · 证据 E01/E02/E03 · 数据来源 INDUSTRY_DEMO_FIXTURE（演示）</div>
+  </div>
+
+  <div class="demo-actions">
+    <button class="button button-dark" id="analyze-btn" type="button">AI 分析此事件</button>
+    <button class="button button-small" id="reset-btn" type="button" hidden>重新播放</button>
+    <span class="demo-status" id="demo-status" role="status" aria-live="polite"></span>
+  </div>
+
+  <div class="demo-steps" id="demo-steps" hidden>
+    <article class="demo-step" data-step="1">
+      <div class="demo-step-head"><span class="step-no">01</span><h3>首轮诊断 · 证据不足，不妄断</h3><span class="tag">round 1 · abstain=true</span></div>
+      <p>助手收到证据包后输出 3 条候选原因，全部 abstain（不做确定性根因结论），并请求只读补证。真实调用：run 6094ff82… / session 8f8b1405… / SSE 1087 帧。</p>
+      <ul class="check-list">
+        <li>H1 上游供电 / 母线电压异常 —— 支持：两设备同窗下降</li>
+        <li>H2 站级调度限功率 / 峰谷策略 —— 支持：同属 BUS-B</li>
+        <li>H3 测量时间戳 / 读数质量异常 —— 支持：缺独立交叉测点</li>
+      </ul>
+      <div class="diagnosis-next"><span>补证请求 · REQUESTED EVIDENCE</span><p>Q01：读取 METER-01 母线电压窗口（白名单只读查询，预算内）</p></div>
+    </article>
+
+    <article class="demo-step" data-step="2">
+      <div class="demo-step-head"><span class="step-no">02</span><h3>本地只读补证 · 回发同一会话</h3><span class="tag">read-only query · Q01</span></div>
+      <p>本地工具链执行白名单只读查询并回发同一会话（不重复创建）：母线电压 396 V，处于额定范围内。该读数为本地声明 fixture 的模拟遥测，已在输出中标注。</p>
+      <div class="overview-metrics">
+        <div><small>METER-01 母线电压</small><strong>396<span>V</span></strong></div>
+        <div><small>额定范围</small><strong>353–407<span>V</span></strong></div>
+        <div><small>结论</small><strong>正常<span>范围内</span></strong></div>
+      </div>
+    </article>
+
+    <article class="demo-step" data-step="3">
+      <div class="demo-step-head"><span class="step-no">03</span><h3>第二轮 · 修订候选，转人工核验</h3><span class="tag">round 2 · NEEDS_HUMAN</span></div>
+      <p>助手基于新证据修订：真实调用 run c1b6bccc…（同一会话，input_revision=2，SSE 1008 帧），全部输出通过本地 Schema 与语义合同校验。</p>
+      <ul class="check-list">
+        <li>H1 保留，但增加 against=E04：电压正常削弱「电压异常」分支</li>
+        <li>H2 不误升：母线电压正常不能直接证明调度限功率</li>
+        <li>H3 保留：单点模拟读数需交叉验证</li>
+      </ul>
+      <div class="diagnosis-next"><span>预算与证据价值评估 · 转人工</span><p>Q01 已执行、固定窗口重复读取无新增区分价值，无其他可用只读证据 → 输出 7 项人工核验清单，由有资质人员按规程现场核对。</p></div>
+    </article>
+  </div>
+
+  <div class="demo-table-wrap">
+    <h3>六轮真实 API 调用 · 全部 VALIDATED_ADVISORY</h3>
+    <div class="demo-table">
+      <div><span>轮次</span><span>场景</span><span>session_id</span><span>决策</span></div>
+      <div><span>1</span><span>合成样例 · 多设备功率下降</span><span>d3e07a0294e1430b</span><span>NEEDS_EVIDENCE · 请求 Q01</span></div>
+      <div><span>2</span><span>合成 · 查询预算耗尽</span><span>cf66bbd4c90c48c5</span><span>NEEDS_HUMAN · 转人工</span></div>
+      <div><span>3</span><span>合成 · 电压 400→360V</span><span>a77b2f735ff44247</span><span>NEEDS_HUMAN · 转人工</span></div>
+      <div><span>4</span><span>合成 · 电压缺失</span><span>b3ed93633ed24106</span><span>NEEDS_HUMAN · 不编造</span></div>
+      <div><span>5</span><span>行业 · BUS-B 功率下降</span><span>8f8b1405cefe45c7</span><span>NEEDS_EVIDENCE · 请求 Q01</span></div>
+      <div><span>6</span><span>行业 · 补证闭环（同会话）</span><span>8f8b1405cefe45c7</span><span>NEEDS_HUMAN · 修订转人工</span></div>
+    </div>
+  </div>
+
+  <div class="method-note">
+    <strong>安全与可信边界</strong>
+    <p>全链路只读：白名单查询 telemetry_window，不含设备控制指令；密钥经 DPAPI 加密仅存服务端，不入前端与公开仓库；本地 50 项单元测试保障合同校验与失败恢复（UNKNOWN_REMOTE_STATE / RESULT_NOT_VALIDATED 可对账不重发）。本页为浏览器本地回放，不发起任何网络请求（CSP connect-src 'none'）。</p>
+  </div>
+</section>
+
+<script type="module" src="/assets/evidence-demo.js"></script>

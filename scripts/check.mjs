@@ -76,14 +76,14 @@ async function check() {
   const built = await build();
   const expectedPages = new Set([
     'index.html', 'platform.html', 'solutions.html', 'technology.html',
-    'experience.html', 'contact.html', 'privacy.html', '404.html',
+    'experience.html', 'evidence-demo.html', 'contact.html', 'privacy.html', '404.html',
   ]);
   if (pages.length !== expectedPages.size || new Set(pages.map(page => page.file)).size !== expectedPages.size || pages.some(page => !expectedPages.has(page.file))) {
-    report('The website must build the eight expected HTML pages exactly once.');
+    report('The website must build the nine expected HTML pages exactly once.');
   }
   const allFiles = await walk(dist);
   const htmlFiles = allFiles.filter(file => file.endsWith('.html'));
-  if (htmlFiles.length !== expectedPages.size) report(`Expected eight built HTML pages; found ${htmlFiles.length}.`);
+  if (htmlFiles.length !== expectedPages.size) report(`Expected nine built HTML pages; found ${htmlFiles.length}.`);
 
   const documents = new Map();
   for (const file of htmlFiles) {
