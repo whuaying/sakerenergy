@@ -29,6 +29,11 @@ There are no npm runtime or build dependencies. `check` compiles eight static pa
 
 ## Publishing
 
+### Git synchronization
+
+- The user requests that completed project updates be synchronized to GitHub automatically. After meaningful checks pass, commit the intended project changes, push to the configured remote, and verify that the remote branch matches the local commit. Report failures or remaining uncommitted work accurately.
+- Keep credentials, private run records, local environments and account webpage captures out of commits. Preserve concurrent work; do not force-push or overwrite it.
+
 Render service name: `saker-energy`; source: this repository's `main` branch; build: `npm run check && npm test`; output: `dist`.
 
 The GitHub repository remains private. A public site exposes only the curated `dist/` output. A `render.yaml` file does not automatically create a Blueprint for an existing directly managed service; verify actual Render settings before changing infrastructure.

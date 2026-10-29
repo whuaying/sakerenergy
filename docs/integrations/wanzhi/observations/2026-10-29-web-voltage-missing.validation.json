@@ -1,0 +1,26 @@
+{
+  "observed_on": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "provenance": "USER_REPORTED_PLATFORM_OUTPUT",
+  "source_file": "2026-10-29-web-voltage-missing.json",
+  "source_sha256": "9104ce63d5c482c66eed15f8df7b4ed40e5bbc17447261914ca5d7d72adf9e38",
+  "input_file": "../voltage-missing.input.json",
+  "schema_pass": true,
+  "application_gate": "PASS",
+  "summary_length": 508,
+  "manual_missing_data_behavior": "PASS_FOR_THIS_OUTPUT",
+  "checks": {
+    "origin_preserved": true,
+    "no_fabricated_voltage_in_summary": true,
+    "no_extra_query": true,
+    "abstain_and_human": true,
+    "endpoint_timing_limit_acknowledged": true
+  },
+  "review_limits": [
+    "Candidate ordering is not validated by independent ground truth.",
+    "H2 joins physical voltage and measurement errors; these should remain distinguishable in later investigation.",
+    "E04 supports a missing observation, not a confirmed fault in the power measurement chain."
+  ],
+  "live_api_verified": false,
+  "scientific_diagnostic_accuracy_evaluated": false
+}

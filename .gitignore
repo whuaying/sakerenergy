@@ -27,6 +27,14 @@ go.work.sum
 
 # env file
 .env
+.env.*
+!.env.example
+backend/.private/
+backend/.venv-wanzhi/
+__pycache__/
+*.pyc
+/万智大模型一站式平台.html
+/万智大模型一站式平台_files/
 
 # Editor/IDE
 # .idea/

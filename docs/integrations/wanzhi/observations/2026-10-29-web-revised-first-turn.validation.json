@@ -1,0 +1,13 @@
+{
+  "observed_on": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "provenance": "USER_REPORTED_PLATFORM_OUTPUT",
+  "source_file": "2026-10-29-web-revised-first-turn.json",
+  "source_sha256": "b40a7e7cb932bfa03617058e714cef25deb3208042ac8991a73749ce5169a2a0",
+  "input_file": "../evidence-package.example.json",
+  "schema_pass": true,
+  "summary_length": 520,
+  "application_gate": "PASS",
+  "live_api_verified": false,
+  "scientific_diagnostic_accuracy_evaluated": false
+}

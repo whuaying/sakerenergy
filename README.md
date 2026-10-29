@@ -16,6 +16,8 @@
 
 本次仓库上传及项目升级边界见 [项目改动说明](docs/PROJECT-CHANGELOG.md)。其中区分了已实现的官网/后端原型、已执行的检查、尚未完成的后端复跑，以及面向云桥杯的主动补证与可恢复检修升级路线。
 
+万智平台的接入设计、截图创建步骤、Agent 提示词和本机会话联调工具见 [万智接入实施方案](docs/integrations/wanzhi/README.md)。四轮真实 API 调用记录已通过现有合同校验，输入均为合成开发样例；大屏集成、自动补证与现场诊断准确性仍未验证。
+
 ![Saker Energy 正式站点首页](docs/website/qa/homepage.jpg)
 
 ```sh

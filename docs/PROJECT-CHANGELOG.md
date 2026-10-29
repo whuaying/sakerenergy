@@ -3,6 +3,14 @@
 更新时间：2026-10-26（日本时间）  
 项目仓库：[github.com/whuaying/sakerenergy](https://github.com/whuaying/sakerenergy)
 
+## 2026-10-29 增量：万智真实 API 调用闭环
+
+指定 Agent 的首轮与 no-budget、voltage-sag、voltage-missing 三个分支已有真实平台 run 记录，四轮在本机复核中均通过输入哈希、JSON Schema 与应用语义校验，状态为 `VALIDATED_ADVISORY`。OpenAPI Key 与模型 Key 分别配置并在本机 DPAPI 加密保存，新增双击弹窗录入；50项离线测试通过。详细范围与证据见 [里程碑复核](integrations/wanzhi/observations/2026-10-29-live-milestone-verified.md)。
+
+以上输入均为手工构造的合成开发样例，不是现场测量；API 接通不能证明根因诊断准确率。公开 Agent 分享链接尚未配置，自动补证执行器、任务队列、大屏接入、说明书与视频仍需分别完成和核验。本轮未修改官网功能，代码同步结果以 Git 远端提交为准。
+
+用户要求今后每次完成项目更新，执行相关检查后提交并推送 GitHub，再核验远端提交。此要求已写入仓库 AGENTS.md；凭据、私有运行记录和账户网页快照不入库。本次同步前重新执行：万智工具50项测试通过，`npm run check`通过，官网7项测试通过。
+
 ## 当前上传内容
 
 本次上传的是 Saker Energy 的完整项目目录，包含：

@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "event_id": "demo-event-001",
+  "input_revision": 5,
+  "round_id": "demo-round-voltage-missing",
+  "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+  "status": "NEEDS_HUMAN",
+  "abstain": true,
+  "summary": "当前输入为合成/模拟开发夹具（data_origin=SYNTHETIC_DEVELOPMENT_FIXTURE），非真实设备数据，以下均按模拟解释。窗口 2026-10-28T10:00–10:01Z 内，CP-05（E01）功率由 96 kW 降至 60 kW、PCS-01（E02）由 180 kW 降至 110 kW；每点仅两个端点样本，只能表述为同窗下降，不能断言同时变化，也不能据此建立因果。E02 明确标注为正=向母线放电，且数值不构成功率平衡，故不以其做功率平衡推断；E01 未给出符号约定。E03 表明两台设备同属 BUS-B，但上游电压与调度记录未提供。E04（Q01，METER-01 bus_voltage）样本为空、quality=missing，且其范围为示意性上游站表、非独立核验的 BUS-B 电压：因此母线电压实际缺失，既不能用“母线电压正常”证明调度限功率，也无法排除电压或测量异常；quality=good 也不能单独排除测量或对时异常。available_queries 为空且 query_budget_remaining=0，无可用只读补证，故保留待核验结论并转人工核查。",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "rank": 1,
+      "cause": "可能为调度/EMS 限功率指令导致 CP-05 与 PCS-01 在窗口内同窗降出力（待核验，非已确认原因）",
+      "support_evidence_ids": ["E01", "E02", "E03"],
+      "against_evidence_ids": [],
+      "missing_information": ["调度/EMS 限功率记录及其下发时刻是否覆盖 10:00–10:01Z 窗口", "AGC/限功率指令日志与执行回执", "BUS-B 上游母线电压窗口数据", "CP-05 与 PCS-01 相互独立的时间戳核对结果"]
+    },
+    {
+      "hypothesis_id": "H2",
+      "rank": 2,
+      "cause": "可能为 BUS-B 上游母线电压异常或其测量异常导致两设备出力受限（待核验，非已确认原因）",
+      "support_evidence_ids": ["E03"],
+      "against_evidence_ids": [],
+      "missing_information": ["BUS-B 上游母线电压的独立、可追溯测量记录", "METER-01（Q01）无数据的原因、量程与测点归属 BUS-B 的对应关系", "电压越限/欠压保护或告警记录", "电压测点自身质量标志与对时状态"]
+    },
+    {
+      "hypothesis_id": "H3",
+      "rank": 3,
+      "cause": "可能存在测点缺失、对时或计量链路异常，使现有功率读数不足以支撑设备侧结论（待核验，非已确认原因）",
+      "support_evidence_ids": ["E04"],
+      "against_evidence_ids": [],
+      "missing_information": ["CP-05、PCS-01 独立时间戳与对时偏差（NTP/对时状态）", "METER-01 通讯与计量链路日志", "第三路独立功率或电压测量用于交叉校核", "各测点的完整质量码与采集重启记录"]
+    }
+  ],
+  "requested_evidence": [],
+  "human_checks": [
+    "由合格人员按厂家与现场规程核对调度/EMS 限功率指令记录及其下发与生效时刻是否覆盖 2026-10-28T10:00–10:01Z。",
+    "核对 BUS-B 上游母线电压的独立测量记录、测点量程、质量码与对时状态，确认现有数据是否可用。",
+    "核对 METER-01（Q01）无数据的原因，及其是否为 BUS-B 电压的独立有效来源。",
+    "核对 CP-05 与 PCS-01 各自的独立时间戳与对时状态，确认两路功率读数在时间上是否可比。",
+    "核对窗口内保护、告警与事件记录（限功率、欠压/过压、跳闸等），确认是否存在可解释出力下降的独立记录。",
+    "核对 CP-05 与 PCS-01 的符号约定与计量方向定义，确认两路功率是否可直接比较。"
+  ]
+}

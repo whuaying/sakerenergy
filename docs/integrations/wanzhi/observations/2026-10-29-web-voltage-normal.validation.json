@@ -1,0 +1,19 @@
+{
+  "observed_on": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "provenance": "USER_REPORTED_PLATFORM_OUTPUT",
+  "source_file": "2026-10-29-web-voltage-normal.json",
+  "source_sha256": "099ef88652ef1ef38a39338fe61ea058a2a916c77639d935c16bbe06d1c08e36",
+  "input_file": "../voltage-normal.input.json",
+  "schema_pass": true,
+  "application_gate": "PASS",
+  "summary_length": 508,
+  "manual_evidence_review": "NEEDS_REVISION",
+  "manual_findings": [
+    "H3 cites E01 as counterevidence without a fact contradicting the broad measurement/time-alignment hypothesis.",
+    "E04 measurement-scope uncertainty does not itself demonstrate a faulty measurement chain.",
+    "Two samples establish a change between endpoints, not the exact time of simultaneous physical change."
+  ],
+  "live_api_verified": false,
+  "scientific_diagnostic_accuracy_evaluated": false
+}

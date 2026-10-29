@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Saker Wanzhi advisory decision v1 (proposed application contract)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "input_revision", "round_id", "data_origin", "status", "abstain", "summary", "hypotheses", "requested_evidence", "human_checks"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "input_revision": {"type": "integer", "minimum": 1},
+    "round_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "data_origin": {"type": "string", "minLength": 1, "maxLength": 128},
+    "status": {"enum": ["NEEDS_EVIDENCE", "NEEDS_HUMAN", "CANDIDATES_READY"]},
+    "abstain": {"type": "boolean"},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 600},
+    "hypotheses": {
+      "type": "array", "maxItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["hypothesis_id", "rank", "cause", "support_evidence_ids", "against_evidence_ids", "missing_information"],
+        "properties": {
+          "hypothesis_id": {"type": "string", "minLength": 1, "maxLength": 64},
+          "rank": {"type": "integer", "minimum": 1, "maximum": 3},
+          "cause": {"type": "string", "minLength": 1, "maxLength": 300},
+          "support_evidence_ids": {"$ref": "#/$defs/ids"},
+          "against_evidence_ids": {"$ref": "#/$defs/ids"},
+          "missing_information": {"$ref": "#/$defs/texts"}
+        }
+      }
+    },
+    "requested_evidence": {
+      "type": "array", "maxItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["query_id", "reason"],
+        "properties": {
+          "query_id": {"type": "string", "minLength": 1, "maxLength": 64},
+          "reason": {"type": "string", "minLength": 1, "maxLength": 600}
+        }
+      }
+    },
+    "human_checks": {"$ref": "#/$defs/texts"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "NEEDS_EVIDENCE"}}, "required": ["status"]},
+      "then": {"properties": {"requested_evidence": {"minItems": 1}}},
+      "else": {"properties": {"requested_evidence": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "NEEDS_HUMAN"}}, "required": ["status"]},
+      "then": {"properties": {"abstain": {"const": true}, "human_checks": {"minItems": 1}}}
+    }
+  ],
+  "$defs": {
+    "ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 128}},
+    "texts": {"type": "array", "maxItems": 20, "items": {"type": "string", "minLength": 1, "maxLength": 600}}
+  }
+}

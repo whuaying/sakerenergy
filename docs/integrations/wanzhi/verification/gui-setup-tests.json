@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-29",
+  "command": "backend/.venv-wanzhi/Scripts/python.exe -m unittest discover -s backend/tests -p test_wanzhi*.py",
+  "tests_run": 50,
+  "result": "PASS",
+  "transport": "OFFLINE_FAKE_ONLY",
+  "credentials": "FAKE_TEST_VALUES_ONLY",
+  "checks": [
+    "DPAPI roundtrip and no plaintext persisted",
+    "preserve optional model key",
+    "reject invalid characters without overwriting configuration",
+    "sanitized failure messages",
+    "Tk masked entry and asynchronous single submission",
+    "clear input on saved result",
+    "open despite malformed previous key"
+  ],
+  "real_key_entry": "PENDING_USER_LOCAL_GUI",
+  "agent_conversation_verified": false
+}

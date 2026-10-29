@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "demo-event-001",
+  "input_revision": 1,
+  "round_id": "demo-round-001",
+  "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+  "status": "NEEDS_EVIDENCE",
+  "abstain": true,
+  "summary": "手工构造的模拟样例显示两台设备功率同期下降且共享母线；现有证据不能区分供电扰动、正常调度和采集时间问题。建议先核对事件时间窗内的母线电压。以下是格式示例，不是实际万智响应。",
+  "hypotheses": [
+    {"hypothesis_id": "H1", "rank": 1, "cause": "可能的上游供电扰动，待核验", "support_evidence_ids": ["E01", "E02", "E03"], "against_evidence_ids": [], "missing_information": ["母线电压及上游记录"]},
+    {"hypothesis_id": "H2", "rank": 2, "cause": "可能的正常调度限功率，待核验", "support_evidence_ids": ["E01", "E02"], "against_evidence_ids": [], "missing_information": ["调度记录及功率限值"]},
+    {"hypothesis_id": "H3", "rank": 3, "cause": "可能的采集或时间对齐异常，待核验", "support_evidence_ids": [], "against_evidence_ids": [], "missing_information": ["设备独立时间戳、网关质量记录"]}
+  ],
+  "requested_evidence": [{"query_id": "Q01", "reason": "用同期母线电压检查H1的支持程度；即使电压异常，也仍需区分真实扰动与测量问题。"}],
+  "human_checks": ["由合格人员按现场规程核对调度和设备独立记录；本建议不代表已检查或已维修。"]
+}

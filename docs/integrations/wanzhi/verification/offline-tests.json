@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-28T15:51:33.510738+00:00",
+  "scope": "OFFLINE_FIXTURE_TESTS_ONLY",
+  "tests_run": 41,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "real_key_used": false,
+  "live_provider_call_executed": false,
+  "models_or_real_devices_evaluated": false,
+  "command": "backend/.venv-wanzhi/Scripts/python.exe -m unittest discover -s backend/tests -p test_wanzhi.py -v",
+  "source_sha256": {
+    "backend/integrations/wanzhi_client.py": "8d5a69d1a927394630b9702324717a27d1dbdc7faf37fb800e9261c4e9b52bb9",
+    "backend/integrations/wanzhi_config.py": "b7081ab5535b994a6fbe7c4818a20674590db138295a7063721bd396f562cf31",
+    "backend/integrations/wanzhi_contract.py": "291c58de0e5c3664b91ef276ff8ba1e210e7975d0226a10d95a69da5407df4e7",
+    "backend/integrations/__init__.py": "4a3d93035f23df210382e4a0ca2ed8ebd12e10b404a9cd11ab0120053cd35464",
+    "backend/wanzhi.py": "99c6402368e85a1ba063d579f60b415c83138f4ca949544dcfcdfa9c5117fd2e",
+    "backend/tests/test_wanzhi.py": "29f6da2743d3279673c5b420d79807219bd04c762eb5b3004563cc44213b6b60"
+  }
+}

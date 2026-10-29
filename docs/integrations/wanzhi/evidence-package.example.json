@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "event_id": "demo-event-001",
+  "input_revision": 1,
+  "round_id": "demo-round-001",
+  "trace_id": "demo-trace-001",
+  "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+  "description": "多设备功率同期下降，原因待核验。本文件为手工构造格式样例，不来自真实场站或后端实跑。",
+  "window": {
+    "from": "2026-10-28T10:00:00Z",
+    "to": "2026-10-28T10:01:00Z"
+  },
+  "evidence": [
+    {
+      "evidence_id": "E01",
+      "device_id": "CP-05",
+      "point": "power_kw",
+      "unit": "kW",
+      "samples": [{"time": "2026-10-28T10:00:00Z", "value": 96}, {"time": "2026-10-28T10:01:00Z", "value": 60}],
+      "quality": "good",
+      "source": "hand_authored_fixture_v1"
+    },
+    {
+      "evidence_id": "E02",
+      "device_id": "PCS-01",
+      "point": "power_kw",
+      "unit": "kW",
+      "samples": [{"time": "2026-10-28T10:00:00Z", "value": 180}, {"time": "2026-10-28T10:01:00Z", "value": 110}],
+      "sign_convention": "positive=discharging_to_bus; values_do_not_form_a_power_balance",
+      "quality": "good",
+      "source": "hand_authored_fixture_v1"
+    },
+    {
+      "evidence_id": "E03",
+      "device_ids": ["CP-05", "PCS-01"],
+      "kind": "topology",
+      "fact": "两台设备同属BUS-B；尚未提供上游电压和调度记录。",
+      "quality": "good",
+      "source": "hand_authored_fixture_v1"
+    }
+  ],
+  "missing_information": ["上游母线电压窗口", "调度限功率记录", "设备独立时间戳核对"],
+  "available_queries": [
+    {"query_id": "Q01", "kind": "telemetry_window", "description": "读取当前事件固定时间窗的METER-01母线电压；缺失时返回missing，不补造读数。", "cost_units": 1}
+  ],
+  "query_budget_remaining": 3
+}

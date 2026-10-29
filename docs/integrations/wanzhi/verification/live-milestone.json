@@ -1,0 +1,118 @@
+{
+  "verified_at": "2026-10-29T03:25:48.823709+00:00",
+  "method": "LOCAL_RECORD_REVALIDATION_NO_NEW_NETWORK_CALLS",
+  "live_platform_runs_with_synthetic_inputs": [
+    {
+      "fixture": "voltage-sag.input.json",
+      "run_id": "22e16ea9-b449-42c5-bd3e-729e3eaf4c3f",
+      "source": "LIVE_API_ATTEMPT",
+      "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+      "state": "VALIDATED_ADVISORY",
+      "input_hash_valid": true,
+      "schema_and_application_semantics_valid": true,
+      "record_sha256": "d9eda76ba4e47d856e90b6e4919e80e6a73679f7aaf5c1b486ff569975c2de51",
+      "input_sha256": "5bcf47bb388dbc6834a8275d01752efc179af7ca7b21fa17bf90583b5ea5d34d",
+      "frame_count": 1289,
+      "event_types": [
+        "text",
+        "reasoning",
+        "message_result",
+        "finish_reason"
+      ],
+      "receipt_completion_confirmed": true,
+      "record_completion_confirmed": true,
+      "decision_status": "NEEDS_HUMAN",
+      "abstain": true,
+      "query_ids": [],
+      "human_checks": 5
+    },
+    {
+      "fixture": "voltage-missing.input.json",
+      "run_id": "7f9e498d-8342-4222-afcc-277ca240dd96",
+      "source": "LIVE_API_ATTEMPT",
+      "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+      "state": "VALIDATED_ADVISORY",
+      "input_hash_valid": true,
+      "schema_and_application_semantics_valid": true,
+      "record_sha256": "f61142687124c60534c6e9f2ef4d065dffef9f213d7e887ce4ed28eb2b06c4c4",
+      "input_sha256": "e07bb4739ac388ab9d3e8e901b03fde88e22bfdffa01fd45b53b60aa5aa3a575",
+      "frame_count": 1137,
+      "event_types": [
+        "text",
+        "reasoning",
+        "message_result",
+        "finish_reason"
+      ],
+      "receipt_completion_confirmed": true,
+      "record_completion_confirmed": true,
+      "decision_status": "NEEDS_HUMAN",
+      "abstain": true,
+      "query_ids": [],
+      "human_checks": 5
+    },
+    {
+      "fixture": "no-budget.input.json",
+      "run_id": "ddcdf391-0ecf-4a99-9d67-c2855870e028",
+      "source": "LIVE_API_ATTEMPT",
+      "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+      "state": "VALIDATED_ADVISORY",
+      "input_hash_valid": true,
+      "schema_and_application_semantics_valid": true,
+      "record_sha256": "c9d27144c55bdb8ae069164259b5496468640c5c9ea054f1bc5b2f863711c007",
+      "input_sha256": "9894c60aa1261b0188d8804a62abc2e88ff0bbe5f7849a95e4c6ca31872c7817",
+      "frame_count": 698,
+      "event_types": [
+        "text",
+        "reasoning",
+        "message_result",
+        "finish_reason"
+      ],
+      "receipt_completion_confirmed": true,
+      "record_completion_confirmed": true,
+      "decision_status": "NEEDS_HUMAN",
+      "abstain": true,
+      "query_ids": [],
+      "human_checks": 5
+    },
+    {
+      "fixture": "evidence-package.example.json",
+      "run_id": "dfba4f6b-d34f-404e-ab38-8cc174532acc",
+      "source": "LIVE_API_ATTEMPT",
+      "data_origin": "SYNTHETIC_DEVELOPMENT_FIXTURE",
+      "state": "VALIDATED_ADVISORY",
+      "input_hash_valid": true,
+      "schema_and_application_semantics_valid": true,
+      "record_sha256": "9249e7d669fbeb5d8f6b189f7a80ded33544f7cc6aa31bab5999f4076543a627",
+      "input_sha256": "f5369a95686a66a478f1f20ca50fc6d38419af427033487c63fe5e27a7a036a6",
+      "frame_count": 1124,
+      "event_types": [
+        "text",
+        "reasoning",
+        "message_result",
+        "finish_reason"
+      ],
+      "receipt_completion_confirmed": false,
+      "record_completion_confirmed": true,
+      "decision_status": "NEEDS_EVIDENCE",
+      "abstain": true,
+      "query_ids": [
+        "Q01"
+      ],
+      "human_checks": 5
+    }
+  ],
+  "configuration_presence": {
+    "key_configured": true,
+    "template_configured": true,
+    "public_url_configured": false,
+    "completion_event_configured": true,
+    "model_api_key_configured": true
+  },
+  "completion_event": "finish_reason",
+  "offline_test_count": 50,
+  "real_telemetry_validated": false,
+  "physical_root_cause_accuracy_validated": false,
+  "automatic_evidence_executor_implemented": false,
+  "public_share_url_verified": false,
+  "protocol_limit": "finish_reason also occurs on failure; nested failure-state regression remains pending"
+}
