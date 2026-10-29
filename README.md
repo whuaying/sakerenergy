@@ -16,7 +16,7 @@
 
 本次仓库上传及项目升级边界见 [项目改动说明](docs/PROJECT-CHANGELOG.md)。其中区分了已实现的官网/后端原型、已执行的检查、尚未完成的后端复跑，以及面向云桥杯的主动补证与可恢复检修升级路线。
 
-万智平台的接入设计、截图创建步骤、Agent 提示词和本机会话联调工具见 [万智接入实施方案](docs/integrations/wanzhi/README.md)。四轮真实 API 调用记录已通过现有合同校验，输入均为合成开发样例；大屏集成、自动补证与现场诊断准确性仍未验证。
+万智平台的接入设计、截图创建步骤、Agent 提示词和本机会话联调工具见 [万智接入实施方案](docs/integrations/wanzhi/README.md)。**2026-10-29 提交前状态：真实 API 双轮补证闭环已实现并验证——6 轮真实调用全部 VALIDATED_ADVISORY（行业场景 run 6094ff82/c1b6bccc 同会话 1087/1008 帧）；大屏最小集成 demo（evidence-demo.html）已上线；作品说明书 PDF 与演示 MP4 已交付；本地 55 项离线测试通过；公开 Agent URL：https://www.wanzhi.com/studio/agent/d86bc562cb9b450b。** 输入均为合成开发样例，不代表现场诊断准确性；SANDBOX 工具处置见 [观测记录](docs/integrations/wanzhi/observations/2026-10-29-sandbox-unremovable.md)。
 
 ![Saker Energy 正式站点首页](docs/website/qa/homepage.jpg)
 
