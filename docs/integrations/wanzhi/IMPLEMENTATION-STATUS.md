@@ -1,6 +1,15 @@
 # 万智接入第一阶段实际状态
 
-## 最新状态：2026-10-29 真实 API 闭环与四轮复核
+## 最新状态：2026-10-29 提交前（官方截止 2026-10-30 24:00 北京时间）
+
+以下为本阶段最终状态；下文的较早记录只适用于当时，不再代表当前事实。
+
+- **真实万智 API 补证闭环已实现并验证**：`--run` / `--followup` 双轮（run `6094ff82` / `c1b6bccc`，同一 session `8f8b1405cefe45c7`，SSE 1087 / 1008 帧，input_revision=2），决策均为 `VALIDATED_ADVISORY`；累计 6 轮真实调用全部通过本地 Schema + 语义合同校验（详见 `observations/2026-10-29-live-followup-loop.md` 等）。
+- **大屏最小集成 demo 已上线**：`web/pages/evidence-demo.html`（站点 9 页，`npm run check` 通过；`npm test` 7 项通过）。
+- **作品材料已交付**：说明书 PDF、演示 MP4（4:25，解码 0 错误，9 帧验收，`submission/VIDEO-DELIVERY.md`）、公开 Agent URL（`d86bc562cb9b450b`，主办方确认口径）。
+- **测试**：后端 55 项离线测试通过；交付物（视频/说明书）按分镜冻结保留 50 项口径并注明演进。
+- **P0 待办**：SANDBOX 工具（code_interceptor / terminal）禁用 + 禁用后回归，见 [SANDBOX-DISABLE-CHECKLIST.md](SANDBOX-DISABLE-CHECKLIST.md)。
+
 
 已直接读取本机私有 run 记录并重新执行输入合同、输入哈希、JSON Schema 和应用语义校验：首轮、no-budget、voltage-sag、voltage-missing 四轮均为 `VALIDATED_ADVISORY`。详细非敏感清单见 [verification/live-milestone.json](verification/live-milestone.json)，分支说明见 [observations/2026-10-29-live-milestone-verified.md](observations/2026-10-29-live-milestone-verified.md)。本次复核只读本地文件，没有重复发送或增加付费调用。
 

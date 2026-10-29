@@ -1,6 +1,6 @@
 # 万智接入实施方案
 
-更新：2026-10-29（北京时间）。状态：**首轮及三个分支的真实 API 调用记录已复核，四轮均通过现有结构化合同校验；大屏、任务队列与自动补证仍待实施**。输入均为合成开发样例，不能用于宣称现场诊断准确性。复核证据见 [真实调用里程碑](observations/2026-10-29-live-milestone-verified.md)。
+更新：2026-10-29（北京时间）提交前。状态：**真实 API 双轮补证闭环已实现并验证——6 轮真实调用全部 VALIDATED_ADVISORY（含行业场景 run 6094ff82/c1b6bccc 同会话 1087/1008 帧）；大屏最小集成 demo 已上线（evidence-demo.html）；作品说明书 PDF 与演示 MP4 已交付；本地 55 项离线测试通过**。输入均为合成开发样例，不能用于宣称现场诊断准确性。SANDBOX 工具禁用与回归见 [SANDBOX-DISABLE-CHECKLIST.md](SANDBOX-DISABLE-CHECKLIST.md)；复核证据见 [真实调用里程碑](observations/2026-10-29-live-milestone-verified.md)。
 
 当前可执行入口：[本机配置与联调](LOCAL-RUN.md)；平台操作：[按截图创建Agent](CREATE-AGENT.md)；首轮输出之后：[纠正与补证测试](FOLLOWUP-TESTS.md)。完整方案与后续目标保留如下。
 
