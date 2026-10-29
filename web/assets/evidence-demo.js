@@ -60,4 +60,35 @@
 
   analyzeBtn.addEventListener('click', start);
   resetBtn.addEventListener('click', reset);
+
+  // 自动演示模式：?autoplay=1 时按分镜时间轴自动滚动与点击，用于录屏。
+  // 默认行为不变；本模式不发起任何网络请求。
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('autoplay') !== '1') return;
+
+  // 录制时从首页开始，避免刷新恢复上次的滚动位置。
+  window.history.scrollRestoration = 'manual';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  const scrollTop = (el) => {
+    const y = el.getBoundingClientRect().top + window.scrollY - 96;
+    window.scrollTo({ top: Math.max(0, y), behavior: reduced ? 'auto' : 'smooth' });
+  };
+  const timeline = [
+    { at: 8, run: () => scrollTop(document.getElementById('demo')) },
+    { at: 40, run: () => analyzeBtn.click() },
+    { at: 58, run: () => scrollTop(document.querySelector('[data-step="1"]')) },
+    { at: 93, run: () => scrollTop(document.querySelector('[data-step="2"]')) },
+    { at: 128, run: () => scrollTop(document.querySelector('[data-step="3"]')) },
+    { at: 163, run: () => scrollTop(document.querySelector('.method-note')) },
+    { at: 198, run: () => scrollTop(document.querySelector('.demo-table-wrap')) },
+  ];
+  const t0 = Date.now();
+  const autoplayTimer = setInterval(() => {
+    const t = (Date.now() - t0) / 1000;
+    for (const item of timeline) {
+      if (!item.done && t >= item.at) { item.done = true; item.run(); }
+    }
+    if (t > 248) window.clearInterval(autoplayTimer);
+  }, 200);
 })();

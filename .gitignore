@@ -47,3 +47,7 @@ node_modules/
 *.log
 *.err
 
+# Source recording attempts and superseded narration stay local.
+/docs/integrations/wanzhi/submission/raw-recording.mp4
+/docs/integrations/wanzhi/submission/demo-narration.wav
+

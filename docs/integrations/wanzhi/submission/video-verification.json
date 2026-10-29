@@ -1,0 +1,295 @@
+{
+  "capture_method": "CONTINUOUS_BROWSER_VIEWPORT_CAPTURE_NOT_DESKTOP",
+  "capture_frames": 4552,
+  "capture_last_frame_seconds": 249.981,
+  "capture_average_fps": 18.208,
+  "encoding_fps": 24,
+  "hero_source": "Verified browser-preflight.jpg held for first eight replay seconds",
+  "voice_source": "Offline Microsoft Huihui Desktop; eight storyboard paragraphs",
+  "narration_exact_storyboard_text": true,
+  "voice_timing": [
+    {
+      "scene": 1,
+      "start": 1,
+      "duration": 15.022229166666667,
+      "speed": 1.0
+    },
+    {
+      "scene": 2,
+      "start": 24,
+      "duration": 14.197916666666666,
+      "speed": 1.0
+    },
+    {
+      "scene": 3,
+      "start": 47,
+      "duration": 18.161958333333335,
+      "speed": 1.0
+    },
+    {
+      "scene": 4,
+      "start": 74,
+      "duration": 20.579791666666665,
+      "speed": 1.0
+    },
+    {
+      "scene": 5,
+      "start": 109,
+      "duration": 13.653020833333333,
+      "speed": 1.0
+    },
+    {
+      "scene": 6,
+      "start": 144,
+      "duration": 20.6243125,
+      "speed": 1.0
+    },
+    {
+      "scene": 7,
+      "start": 179,
+      "duration": 12.659645833333334,
+      "speed": 1.0
+    },
+    {
+      "scene": 8,
+      "start": 215,
+      "duration": 13.5796875,
+      "speed": 1.0
+    }
+  ],
+  "technical_requirements_passed": true,
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 1920,
+        "height": 1080,
+        "coded_width": 1920,
+        "coded_height": 1080,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 40,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 3256320,
+        "duration": "265.000000",
+        "bit_rate": "83053",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "6360",
+        "extradata_size": 47,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.3.100 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 12720000,
+        "duration": "265.000000",
+        "bit_rate": "69617",
+        "nb_frames": "12423",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "E:\\saker-energy-main\\docs\\integrations\\wanzhi\\submission\\作品演示-充储场站证据诊断助手.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "265.000000",
+      "size": "5242771",
+      "bit_rate": "158272",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf60.3.100"
+      }
+    }
+  },
+  "sha256": "509c3b9279a8d4c219d4a59b1ff502ddf15c416189d5a0cf53ad81b82f5527f3",
+  "visual_review": {
+    "status": "PASS",
+    "final_video_frames_checked": 9,
+    "outside_app_overlays_seen": false,
+    "hero_verified": true,
+    "voltage_396_verified": true,
+    "origin_label_retained": true,
+    "agent_entry_overlay_verified": true
+  },
+  "full_playback_review": {
+    "status": "PASS",
+    "player": "FFplay, local video and audio, autoexit",
+    "exit_code": 0,
+    "last_played_seconds": 264.97,
+    "stats_samples": 5657,
+    "steady_state_av_absolute_max_seconds": 0.375,
+    "steady_state_av_absolute_p95_seconds": 0.034,
+    "scope": "Player clock synchronization plus visual frames and exact narration schedule; not subjective voice scoring"
+  },
+  "full_decode_check": "PASS_NO_ERRORS",
+  "displayed_test_count_frozen_to_storyboard": 50,
+  "latest_backend_tests_passed": 55,
+  "cross_document_numbers": {
+    "396": {
+      "pdf": true,
+      "page": true
+    },
+    "50": {
+      "pdf": true,
+      "page": true
+    },
+    "1087": {
+      "pdf": true,
+      "page": true
+    },
+    "1008": {
+      "pdf": true,
+      "page": true
+    },
+    "8f8b1405cefe45c7": {
+      "pdf": true,
+      "page": true
+    },
+    "d86bc562cb9b450b": {
+      "pdf": true,
+      "page": true
+    },
+    "run_prefixes": {
+      "6094ff82": {
+        "page": true,
+        "pdf": false
+      },
+      "c1b6bccc": {
+        "page": true,
+        "pdf": false
+      }
+    }
+  },
+  "required_run_ids_verified_from_private_records": [
+    "6094ff82-25a2-4d2b-a2f4-4c28afe80f17",
+    "c1b6bccc-8d86-46fa-a5e6-8bce42f8fa58"
+  ],
+  "git_exclusions": [
+    "Private browser frames/profile/audio",
+    "Original incomplete raw-recording.mp4",
+    "Superseded demo-narration.wav"
+  ],
+  "mobile_browser_check": {
+    "viewport": [
+      390,
+      844
+    ],
+    "scroll_width": 386,
+    "displayed_steps_after_button": 3,
+    "origin_label_retained": true,
+    "real_phone_test": false
+  },
+  "verified_at": "2026-10-29T16:35:04.466155+08:00",
+  "file_size_bytes": 5242771,
+  "validation_notes": [
+    "Run prefixes are absent from PDF and were checked against private original run records instead.",
+    "Video retains frozen storyboard 50-test wording; current offline rerun includes 55 tests.",
+    "Browser viewport capture substituted for desktop capture after Windows helper and launch restrictions."
+  ],
+  "source_sha256": {
+    "web/pages/evidence-demo.html": "9f412256158eda209aec301f415f1228ba7be20539381c8be893d03a5a35cdda",
+    "web/assets/evidence-demo.js": "c63a77de229d5f5668b19e9f2fcae6efe24a5241d6e2925dded69cda0cb907e6",
+    "docs/integrations/wanzhi/submission/MP4-demo-storyboard.md": "9805d94e852804aef154d695870e1dbcdce84f5eee142c5e93028dfd5030a226",
+    "docs/integrations/wanzhi/submission/demo-subtitles.ass": "53e32b501723589c217ee9cf7d2f8fb501dcaebe7aa9dc58115f010af202664f",
+    "docs/integrations/wanzhi/submission/2026云桥杯-SakerEnergy充储场站证据诊断助手-作品说明书.pdf": "86c135d3d09ffa6283b601db11f240898aee86426c8d4f68d32609223e3d1048"
+  },
+  "autoplay_reload_check": {
+    "scroll_top": 0,
+    "hero_top": 218.5,
+    "viewport": [
+      1920,
+      1080
+    ]
+  }
+}

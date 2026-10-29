@@ -68,3 +68,9 @@ Render 构建日志确认 Node.js 24.22.0，静态检查通过，7 项测试通�
 ![数字场站交互页面](qa/experience.jpg)
 
 后续维护和回滚方式见 [开发与部署](DEVELOPMENT.md)。本次未进行真实硬件、真实手机 Safari、长期负载或工业安全认证验收。
+
+## 2026-10-29 参赛视频与自动回放参数
+
+`evidence-demo.js`增加的 `?autoplay=1` 时间轴随视频制作同步入库；默认按钮回放保留。1920×1080浏览器自动播放连续采集覆盖三步回放；390×844浏览器尺寸下实际点击分析按钮，三步均显示，测得scrollWidth=386≤viewportWidth=390，保留演示来源标注。移动截图与成片关键帧见 `../integrations/wanzhi/submission/video-qa/`。
+
+本次执行网站构建检查：9页、7个JavaScript文件、249个本地引用通过；官网7项测试通过。视频制作及编码、配音与播放验证详见 [交付记录](../integrations/wanzhi/submission/VIDEO-DELIVERY.md)。本次未核验Render部署状态，浏览器尺寸测试不等于真实手机设备测试。

@@ -1,0 +1,32 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 0
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Microsoft YaHei,30,&H00FFFFFF,&H00FFFFFF,&H00101D16,&H900C160F,0,0,0,0,100,100,0,0,3,1,0,2,170,170,36,1
+Style: Origin,Microsoft YaHei,22,&H00FFFFFF,&H00FFFFFF,&H00101D16,&H900C160F,0,0,0,0,100,100,0,0,3,1,0,9,30,30,18,1
+Style: Note,Microsoft YaHei,24,&H00FFFFFF,&H00FFFFFF,&H00101D16,&H900C160F,0,0,0,0,100,100,0,0,3,1,0,8,50,50,62,1
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:15.00,0:04:25.00,Origin,,0,0,0,,演示回放 · INDUSTRY_DEMO_FIXTURE（演示）· 非现场遥测
+Dialogue: 0,0:00:47.00,0:01:13.00,Note,,0,0,0,,仅有两个端点：可确认同窗下降，无法确认精确同步
+Dialogue: 1,0:03:35.00,0:04:23.00,Default,,0,0,0,,{\an5\pos(960,740)\fs25}Agent 入口：https://www.wanzhi.com/studio/agent/d86bc562cb9b450b
+Dialogue: 1,0:00:01.00,0:00:08.09,Default,,0,0,0,,各位评委老师好。本作品面向充储场站的告警根因诊断，
+Dialogue: 1,0:00:08.09,0:00:16.02,Default,,0,0,0,,核心是「证据不足不妄断、主动只读补证、无法定论转人工」。
+Dialogue: 1,0:00:24.00,0:00:33.87,Default,,0,0,0,,我们以典型拓扑为例：PCS 储能变流器与充电桩同挂 0.4kV 母线 BUS-B，
+Dialogue: 1,0:00:33.87,0:00:38.20,Default,,0,0,0,,母线上有电压测点 METER-01。
+Dialogue: 1,0:00:47.00,0:00:53.71,Default,,0,0,0,,窗口内两设备充电功率同时下降。现场仅有功率证据，
+Dialogue: 1,0:00:53.71,0:01:05.16,Default,,0,0,0,,无法区分供电受限、调度限功率还是测量对时问题——我们把它交给万智平台上的诊断助手。
+Dialogue: 1,0:01:14.00,0:01:21.90,Default,,0,0,0,,助手输出三个候选，但明确 abstain：证据不足不下确定性结论，
+Dialogue: 1,0:01:21.90,0:01:28.84,Default,,0,0,0,,并请求读取母线电压作为补证。这是第一轮真实 API 调用，
+Dialogue: 1,0:01:28.84,0:01:34.58,Default,,0,0,0,,全部输出经过本地 Schema 与语义合同校验。
+Dialogue: 1,0:01:49.00,0:02:00.91,Default,,0,0,0,,本地工具链执行白名单只读查询：母线电压 396V，在额定范围内。结果回发同一会话，
+Dialogue: 1,0:02:00.91,0:02:02.65,Default,,0,0,0,,不重复创建。
+Dialogue: 1,0:02:24.00,0:02:34.87,Default,,0,0,0,,第二轮，助手用电压正常这一反证削弱「电压异常」分支，同时不据此误判调度限功率；
+Dialogue: 1,0:02:34.87,0:02:44.62,Default,,0,0,0,,评估后认为重复读取无新增价值，转人工核验。这体现了证据合同与预算约束。
+Dialogue: 1,0:02:59.00,0:03:05.46,Default,,0,0,0,,全链路只读、无设备控制指令；密钥加密存于服务端；
+Dialogue: 1,0:03:05.46,0:03:11.66,Default,,0,0,0,,本地 50 项单元测试保障合同校验与失败恢复。
+Dialogue: 1,0:03:35.00,0:03:46.51,Default,,0,0,0,,六轮真实 API 调用全部通过校验，含完整的补证闭环。评审可在公开链接上复现。
+Dialogue: 1,0:03:46.51,0:03:48.58,Default,,0,0,0,,谢谢各位老师。

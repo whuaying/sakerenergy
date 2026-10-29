@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Saker Energy · 成片播放检查</title>
+<style>html,body{margin:0;background:#07100c;color:#e6efdf;font:16px system-ui}header{height:50px;display:flex;align-items:center;gap:20px;padding:0 24px}button{padding:7px 18px;background:#b7d4ab;border:0;border-radius:6px;color:#183224;cursor:pointer}video{display:block;width:100%;height:calc(100vh - 50px);object-fit:contain}#state{font-size:13px}</style>
+<header><button id="play">播放完整视频</button><span id="state">等待播放</span><span>INDUSTRY_DEMO_FIXTURE（演示）· 非现场遥测</span></header>
+<video id="movie" controls preload="auto" playsinline src="作品演示-充储场站证据诊断助手.mp4"></video>
+<script>
+const movie=document.getElementById('movie'),state=document.getElementById('state');
+document.getElementById('play').addEventListener('click',()=>{movie.currentTime=0;movie.muted=false;movie.volume=1;movie.play().catch(()=>{state.textContent='播放未启动，请使用视频控件。';});});
+function update(){state.textContent=`${movie.ended?'播放结束':movie.paused?'暂停':'播放中'} · ${movie.currentTime.toFixed(1)} / ${Number.isFinite(movie.duration)?movie.duration.toFixed(1):'--'}秒 · ${movie.muted?'静音':'有声'}${movie.error?' · 解码错误':''}`;}
+for(const event of ['loadedmetadata','timeupdate','play','pause','ended','error'])movie.addEventListener(event,update);
+</script></html>
