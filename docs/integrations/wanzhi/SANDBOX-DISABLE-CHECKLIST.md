@@ -1,6 +1,8 @@
-# P0：禁用万智 Agent 的 SANDBOX 工具（提交前安全边界）
+# P0：SANDBOX 工具处置（提交前安全边界）
 
-更新：2026-10-29（北京时间）。目的：消除「全链路只读、无设备控制指令」声明与 Agent 实际工具配置的矛盾，防止评审在 API 回放中看到代码执行能力。
+更新：2026-10-29（北京时间）。**结论：平台不允许移除 SANDBOX 工具（代码解释器 code_interceptor / 虚拟终端 terminal 为内置项，无开关、无移除入口；开放 API 无工具配置端点）。P0 已转为替代方案执行，详见 [observations/2026-10-29-sandbox-unremovable.md](observations/2026-10-29-sandbox-unremovable.md)：提示词显式禁止使用 + 9 份真实 run 记录零调用核验（sandbox-audit.json）。**
+
+本文件以下内容保留为「平台开放关闭能力后的备用流程」。
 
 ## 现状证据
 
